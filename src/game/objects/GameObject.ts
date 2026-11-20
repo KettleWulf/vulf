@@ -5,6 +5,7 @@ export class GameObject {
   public width: number;
   public height: number;
   public color: number;
+  public collidable: boolean;
 
   constructor(
     id: string,
@@ -13,6 +14,7 @@ export class GameObject {
     width: number,
     height: number,
     color: number,
+    collidable: boolean = false,
   ) {
     this.id = id;
     this.x = x;
@@ -20,5 +22,6 @@ export class GameObject {
     this.width = width;
     this.height = height;
     this.color = color;
+    this.collidable = collidable;
   }
 }
