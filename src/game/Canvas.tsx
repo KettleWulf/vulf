@@ -1,5 +1,6 @@
 import { Application, Graphics } from "pixi.js";
 import { useEffect, useRef } from "react";
+import { room1 } from "./rooms/room1";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,36 +26,17 @@ export const Canvas = () => {
         app.destroy();
         return;
       }
-      const floor = new Graphics();
 
-      floor.rect(0, 0, 800, 600);
-      floor.fill(0x64513d);
+      room1.forEach((object) => {
+        const graphic = new Graphics();
 
-      app.stage.addChild(floor);
+        graphic.rect(0, 0, object.width, object.height);
+        graphic.fill(object.color);
 
-      const wallN = new Graphics();
-      wallN.rect(0, 0, 800, 200);
-      wallN.fill(0x654321);
+        graphic.position.set(object.x, object.y);
 
-      app.stage.addChild(wallN);
-
-      const wallS = new Graphics();
-      wallS.rect(0, 550, 800, 50);
-      wallS.fill(0x654321);
-
-      app.stage.addChild(wallS);
-
-      const wallE = new Graphics();
-      wallE.rect(0, 0, 50, 600);
-      wallE.fill(0x654321);
-
-      app.stage.addChild(wallE);
-
-      const wallW = new Graphics();
-      wallW.rect(750, 0, 50, 600);
-      wallW.fill(0x654321);
-
-      app.stage.addChild(wallW);
+        app.stage.addChild(graphic);
+      });
 
       const player = new Graphics();
       player.rect(0, 0, 30, 30);
