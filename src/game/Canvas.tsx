@@ -1,6 +1,7 @@
 import { Application, Graphics } from "pixi.js";
 import { useEffect, useRef } from "react";
 import { room1 } from "./rooms/room1";
+import { isColliding } from "./collisions";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -37,6 +38,8 @@ export const Canvas = () => {
 
         app.stage.addChild(graphic);
       });
+
+      const obstacles = room1.filter((object) => object.collidable);
 
       const player = new Graphics();
       player.rect(0, 0, 30, 30);
@@ -80,7 +83,17 @@ export const Canvas = () => {
         }
 
         if (keys.has("d")) {
-          player.x += speed;
+          const nextX = player.x + speed;
+
+          const nextPosition = { x: nextX, y: player.y, width: 30, height: 30 };
+
+          const collides = obstacles.some((obstacle) =>
+            isColliding(nextPosition, obstacle),
+          );
+
+          if (!collides) {
+            player.x = nextX;
+          }
         }
       });
 
