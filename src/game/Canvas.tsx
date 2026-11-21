@@ -1,7 +1,7 @@
 import { Application, Graphics } from "pixi.js";
 import { useEffect, useRef } from "react";
 import { room1 } from "./rooms/room1";
-import { isColliding } from "./collisions";
+import { tryMove } from "./collisions";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,29 +71,19 @@ export const Canvas = () => {
         const speed = 3 * ticker.deltaTime;
 
         if (keys.has("w")) {
-          player.y -= speed;
+          tryMove(player.y - speed, "y", player, obstacles);
         }
 
         if (keys.has("s")) {
-          player.y += speed;
+          tryMove(player.y + speed, "y", player, obstacles);
         }
 
         if (keys.has("a")) {
-          player.x -= speed;
+          tryMove(player.x - speed, "x", player, obstacles);
         }
 
         if (keys.has("d")) {
-          const nextX = player.x + speed;
-
-          const nextPosition = { x: nextX, y: player.y, width: 30, height: 30 };
-
-          const collides = obstacles.some((obstacle) =>
-            isColliding(nextPosition, obstacle),
-          );
-
-          if (!collides) {
-            player.x = nextX;
-          }
+          tryMove(player.x + speed, "x", player, obstacles);
         }
       });
 
