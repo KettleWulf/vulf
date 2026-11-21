@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { room1 } from "./rooms/room1";
 import { tryMove } from "./systems/collisions";
 import { Player } from "./objects/Player";
+import { setKeys } from "./systems/controls";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,23 +51,7 @@ export const Canvas = () => {
 
       app.stage.addChild(playerGraphic);
 
-      const keys = new Set<string>();
-
-      const handleKeyDown = (event: KeyboardEvent) => {
-        keys.add(event.key.toLowerCase());
-      };
-
-      const handleKeyUp = (event: KeyboardEvent) => {
-        keys.delete(event.key.toLowerCase());
-      };
-
-      window.addEventListener("keydown", handleKeyDown, {
-        signal: controller.signal,
-      });
-
-      window.addEventListener("keyup", handleKeyUp, {
-        signal: controller.signal,
-      });
+      const keys = setKeys(controller.signal);
 
       app.ticker.add((ticker) => {
         const speed = player.speed * ticker.deltaTime;
