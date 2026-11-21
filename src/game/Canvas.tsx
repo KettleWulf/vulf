@@ -2,6 +2,7 @@ import { Application, Graphics } from "pixi.js";
 import { useEffect, useRef } from "react";
 import { room1 } from "./rooms/room1";
 import { tryMove } from "./systems/collisions";
+import { Player } from "./objects/Player";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,13 +42,13 @@ export const Canvas = () => {
 
       const obstacles = room1.filter((object) => object.collidable);
 
-      const player = new Graphics();
-      player.rect(0, 0, 30, 30);
-      player.fill(0x00ff00);
+      const player = new Player("player", 400, 300, 30, 30, 0x00ff00, true);
+      const playerGraphic = new Graphics();
+      playerGraphic.rect(0, 0, player.width, player.height);
+      playerGraphic.fill(player.color);
+      playerGraphic.position.set(player.x, player.y);
 
-      player.position.set(400, 300);
-
-      app.stage.addChild(player);
+      app.stage.addChild(playerGraphic);
 
       const keys = new Set<string>();
 
@@ -68,7 +69,7 @@ export const Canvas = () => {
       });
 
       app.ticker.add((ticker) => {
-        const speed = 3 * ticker.deltaTime;
+        const speed = player.speed * ticker.deltaTime;
 
         if (keys.has("w")) {
           tryMove(player.y - speed, "y", player, obstacles);
@@ -85,6 +86,8 @@ export const Canvas = () => {
         if (keys.has("d")) {
           tryMove(player.x + speed, "x", player, obstacles);
         }
+
+        playerGraphic.position.set(player.x, player.y);
       });
 
       container.appendChild(app.canvas);
