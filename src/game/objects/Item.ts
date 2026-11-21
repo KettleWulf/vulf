@@ -2,6 +2,11 @@ import { InteractableObject } from "./InteractableObject";
 
 export class Item extends InteractableObject {
   public itemId: string;
+  public collected: boolean = false;
+
+  interact() {
+    this.collected = true;
+  }
 
   constructor(
     id: string,

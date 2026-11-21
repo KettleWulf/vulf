@@ -1,6 +1,6 @@
 import { GameObject } from "./GameObject";
 
-export class InteractableObject extends GameObject {
+export abstract class InteractableObject extends GameObject {
   public locked: boolean;
   public interactionRange = 20;
 
@@ -8,10 +8,12 @@ export class InteractableObject extends GameObject {
     return {
       x: this.x - this.interactionRange,
       y: this.y - this.interactionRange,
-      width: this.interactionRange * 2,
-      height: this.interactionRange * 2,
+      width: this.width + this.interactionRange * 2,
+      height: this.height + this.interactionRange * 2,
     };
   }
+
+  abstract interact(): void;
 
   constructor(
     id: string,

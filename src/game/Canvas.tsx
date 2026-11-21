@@ -1,9 +1,12 @@
 import { Application, Graphics } from "pixi.js";
 import { useEffect, useRef } from "react";
 import { room1 } from "./rooms/room1";
-import { tryMove } from "./systems/collisions";
+import { isColliding, tryMove } from "./systems/collisions";
 import { Player } from "./objects/Player";
 import { setKeys } from "./systems/controls";
+import { InteractableObject } from "./objects/InteractableObject";
+import type { GameObject } from "./objects/GameObject";
+import { Item } from "./objects/Item";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,18 +33,24 @@ export const Canvas = () => {
         return;
       }
 
+      const graphics = new Map<GameObject, Graphics>();
+
       room1.forEach((object) => {
         const graphic = new Graphics();
 
         graphic.rect(0, 0, object.width, object.height);
         graphic.fill(object.color);
-
         graphic.position.set(object.x, object.y);
 
         app.stage.addChild(graphic);
+
+        graphics.set(object, graphic);
       });
 
       const obstacles = room1.filter((object) => object.collidable);
+      const interactables = room1.filter(
+        (object) => object instanceof InteractableObject,
+      );
 
       const player = new Player("player", 400, 300, 30, 30, 0x00ff00, true);
       const playerGraphic = new Graphics();
@@ -71,6 +80,24 @@ export const Canvas = () => {
         if (keys.has("d")) {
           tryMove(player.x + speed, "x", player, obstacles);
         }
+
+        if (keys.has("e")) {
+          interactables.forEach((object) => {
+            if (isColliding(player, object.actionArea)) {
+              object.interact();
+            }
+          });
+        }
+
+        room1.forEach((object) => {
+          if (object instanceof Item) {
+            const graphic = graphics.get(object);
+
+            if (graphic) {
+              graphic.visible = !object.collected;
+            }
+          }
+        });
 
         playerGraphic.position.set(player.x, player.y);
       });
