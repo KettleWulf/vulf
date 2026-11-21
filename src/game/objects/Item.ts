@@ -1,6 +1,6 @@
-import { GameObject } from "./GameObject";
+import { InteractableObject } from "./InteractableObject";
 
-export class Item extends GameObject {
+export class Item extends InteractableObject {
   public itemId: string;
 
   constructor(
@@ -11,8 +11,9 @@ export class Item extends GameObject {
     height: number,
     color: number,
     itemId: string,
+    locked: boolean,
   ) {
-    super(id, x, y, width, height, color);
+    super(id, x, y, width, height, color, locked);
     this.itemId = itemId;
   }
 }
