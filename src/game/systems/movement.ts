@@ -1,18 +1,4 @@
-type Rect = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
-
-export const isColliding = (a: Rect, b: Rect): boolean => {
-  return (
-    a.x < b.x + b.width &&
-    a.x + a.width > b.x &&
-    a.y < b.y + b.height &&
-    a.y + a.height > b.y
-  );
-};
+import { isColliding, type Rect } from "./collisions";
 
 export const tryMove = (
   nextOnAxis: number,

@@ -1,7 +1,7 @@
 import { Application, Graphics } from "pixi.js";
 import { useEffect, useRef } from "react";
 import { room1 } from "./rooms/room1";
-import { tryMove } from "./collisions";
+import { tryMove } from "./systems/collisions";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
