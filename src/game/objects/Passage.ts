@@ -25,6 +25,9 @@ export class Passage extends InteractableObject {
   interact(player: Player): void {
     if (player.inventory.includes(this.requiredItemId)) {
       this.locked = false;
+      console.log(`Unlocked passage: ${this.id}`);
+    } else {
+      console.log(`Locked`);
     }
   }
 }
