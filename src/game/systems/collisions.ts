@@ -1,3 +1,5 @@
+import type { Passage } from "../objects/Passage";
+
 export type Rect = {
   x: number;
   y: number;
@@ -19,6 +21,7 @@ export const tryMove = (
   axis: "x" | "y",
   player: Rect,
   obstacles: Rect[],
+  passages: Passage[],
 ) => {
   const nextPosition: Rect = {
     x: player.x,
@@ -33,7 +36,11 @@ export const tryMove = (
     isColliding(nextPosition, obstacle),
   );
 
-  if (!collides) {
+  const passThrough = passages.some(
+    (passage) => !passage.locked && isColliding(nextPosition, passage),
+  );
+
+  if (!collides || passThrough) {
     player[axis] = nextOnAxis;
   }
 };

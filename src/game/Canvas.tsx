@@ -7,6 +7,7 @@ import { setKeys } from "./systems/controls";
 import { InteractableObject } from "./objects/InteractableObject";
 import type { GameObject } from "./objects/GameObject";
 import { Item } from "./objects/Item";
+import { Passage } from "./objects/Passage";
 
 export const Canvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -51,6 +52,7 @@ export const Canvas = () => {
       const interactables = room1.filter(
         (object) => object instanceof InteractableObject,
       );
+      const passages = room1.filter((object) => object instanceof Passage);
 
       const player = new Player("player", 400, 300, 30, 30, 0x00ff00, true);
       const playerGraphic = new Graphics();
@@ -66,19 +68,19 @@ export const Canvas = () => {
         const speed = player.speed * ticker.deltaTime;
 
         if (keys.has("w")) {
-          tryMove(player.y - speed, "y", player, obstacles);
+          tryMove(player.y - speed, "y", player, obstacles, passages);
         }
 
         if (keys.has("s")) {
-          tryMove(player.y + speed, "y", player, obstacles);
+          tryMove(player.y + speed, "y", player, obstacles, passages);
         }
 
         if (keys.has("a")) {
-          tryMove(player.x - speed, "x", player, obstacles);
+          tryMove(player.x - speed, "x", player, obstacles, passages);
         }
 
         if (keys.has("d")) {
-          tryMove(player.x + speed, "x", player, obstacles);
+          tryMove(player.x + speed, "x", player, obstacles, passages);
         }
 
         if (keys.has("e")) {
