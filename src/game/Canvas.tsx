@@ -84,7 +84,7 @@ export const Canvas = () => {
         if (keys.has("e")) {
           interactables.forEach((object) => {
             if (isColliding(player, object.actionArea)) {
-              object.interact();
+              object.interact(player);
             }
           });
         }

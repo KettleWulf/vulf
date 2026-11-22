@@ -1,7 +1,7 @@
 import { GameObject } from "./GameObject";
+import type { Player } from "./Player";
 
 export abstract class InteractableObject extends GameObject {
-  public locked: boolean;
   public interactionRange = 20;
 
   get actionArea() {
@@ -13,7 +13,7 @@ export abstract class InteractableObject extends GameObject {
     };
   }
 
-  abstract interact(): void;
+  abstract interact(player: Player): void;
 
   constructor(
     id: string,
@@ -22,9 +22,8 @@ export abstract class InteractableObject extends GameObject {
     width: number,
     height: number,
     color: number,
-    locked: boolean,
+    collidable: boolean = false,
   ) {
-    super(id, x, y, width, height, color);
-    this.locked = locked;
+    super(id, x, y, width, height, color, collidable);
   }
 }
